@@ -43,10 +43,10 @@ resource functionApp 'Microsoft.Web/sites@2025-03-01' = {
           name: 'AzureWebJobsStorage__managedIdentityClientId'
           value: userAssignedIdentity.properties.clientId
         }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(functionAppName)
-        }
+        // {
+        //   name: 'WEBSITE_CONTENTSHARE'
+        //   value: toLower(functionAppName)
+        // }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
           value: '~4'
