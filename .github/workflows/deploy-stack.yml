@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'infra/**'
-      - '.github/workflows/deploy-stack.yml'
+      - "infra/**"
+      - ".github/workflows/deploy-stack.yml"
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to (dev, staging, prod)'
+        description: "Environment to deploy to (dev, staging, prod)"
         required: true
-        default: 'dev'
+        default: "dev"
         type: choice
         options:
           - dev
@@ -24,8 +24,8 @@ env:
   AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   RESOURCE_GROUP_NAME: ${{ secrets.RESOURCE_GROUP_NAME }}
-  DEPLOYMENT_STACK_NAME: 'stack-dev'
-  ENVIRONMENT: 'dev'
+  DEPLOYMENT_STACK_NAME: "stack-dev"
+  ENVIRONMENT: "dev"
 
 permissions:
   id-token: write
@@ -76,7 +76,7 @@ jobs:
           operation: create
           action-on-unmanage-resources: delete
           deny-settings-mode: none
-     
+
       - name: Get deployment outputs
         id: outputs
         run: |
@@ -100,3 +100,19 @@ jobs:
           echo "**Resource Group:** ${{ env.RESOURCE_GROUP_NAME }}" >> $GITHUB_STEP_SUMMARY
           echo "**Deployment Name:** ${{ env.DEPLOYMENT_STACK_NAME }}" >> $GITHUB_STEP_SUMMARY
           echo "**Stack Name:** ${{ env.DEPLOYMENT_STACK_NAME }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: "Build .NET"
+        working-directory: src
+        run: |
+          dotnet publish Func --output $RUNNER_TEMP/output
+
+      - name: "Publish Azure Functions"
+        uses: Azure/functions-action@v1
+        with:
+          app-name: func-function-user-assigned-identity-dev
+          package: "${{ runner.temp }}/output"
