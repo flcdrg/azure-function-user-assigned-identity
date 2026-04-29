@@ -17,7 +17,7 @@ param accessTier string = 'Hot'
 param tags object = {}
 
 // Storage account resource
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-08-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'
@@ -29,6 +29,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     allowBlobPublicAccess: false
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
+    allowSharedKeyAccess: false
     encryption: {
       services: {
         blob: {
@@ -44,11 +45,25 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     }
     networkAcls: {
       bypass: 'AzureServices'
-      defaultAction: 'Deny'
+      defaultAction: 'Allow'
     }
   }
   tags: tags
 }
+
+// Blob services
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2025-08-01' = {
+  parent: storageAccount
+  name: 'default'
+}
+
+// resource stateContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+//   parent: blobServices
+//   name: 'deployment-stacks-state'
+//   properties: {
+//     publicAccess: 'None'
+//   }
+// }
 
 output storageAccountId string = storageAccount.id
 output storageAccountName string = storageAccount.name

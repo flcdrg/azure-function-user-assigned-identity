@@ -1,8 +1,6 @@
 using './main.bicep'
 
-param location = 'eastus'
 param environment = 'dev'
-param projectName = 'myapp'
-param orgPrefix = 'acme'
+param projectName = 'function-user-assigned-identity'
 param storageSkuName = 'Standard_LRS'
 param storageAccessTier = 'Hot'
