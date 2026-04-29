@@ -109,7 +109,7 @@ jobs:
       - name: "Build .NET"
         working-directory: src
         run: |
-          dotnet publish Func --output $RUNNER_TEMP/output
+          dotnet publish --output $RUNNER_TEMP/output
 
       - name: "Publish Azure Functions"
         uses: Azure/functions-action@v1
