@@ -24,6 +24,16 @@ resource roleAssignmentBlobDataOwner 'Microsoft.Authorization/roleAssignments@20
   }
 }
 
+resource roleAssignmentBlobDataOwnerServicePrincipal 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().id, storage.id, deployer().objectId, 'Storage Blob Data Owner - Service Principal')
+  scope: storage
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageBlobDataOwnerRoleId)
+    principalId: deployer().objectId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 resource roleAssignmentBlob 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(subscription().id, storage.id, userAssignedIdentity.id, 'Storage Blob Data Contributor')
   scope: storage
