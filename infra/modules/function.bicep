@@ -63,6 +63,10 @@ resource functionApp 'Microsoft.Web/sites@2025-03-01' = {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
           value: '1'
         }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID'
+          value: userAssignedIdentity.id
+        }
         // {
         //   name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
         //   value: appInsights.properties.InstrumentationKey
