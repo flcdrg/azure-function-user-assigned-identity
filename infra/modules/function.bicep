@@ -59,6 +59,10 @@ resource functionApp 'Microsoft.Web/sites@2025-03-01' = {
           name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
           value: '1'
         }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
         // {
         //   name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
         //   value: appInsights.properties.InstrumentationKey
